@@ -1,7 +1,7 @@
-import regex as re
-import random
 from dataclasses import dataclass
 from typing import Optional, Any, Union
+
+import regex as re
 from transformers import PreTrainedTokenizerBase
 from transformers.utils import PaddingStrategy
 import numpy as np
@@ -195,5 +195,4 @@ class DataCollatorForSeq2Seq:
         ):
             decoder_input_ids = self.model.prepare_decoder_input_ids_from_labels(labels=features["labels"])
             features["decoder_input_ids"] = decoder_input_ids
-
         return features
