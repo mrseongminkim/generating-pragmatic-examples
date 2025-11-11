@@ -10,11 +10,51 @@ Literal/base model on the HuggingFace Hub: [`pragmatic-programs/listener-suffix-
 ### Training base models
 
 ```
-python literal_trainer.py --model_name_or_path google/byt5-small --cache_dir CACHE_DIR --train_file data/programs-corrected/small-pretrain/listener-train-specs-suffix-idx.tsv --validation_file data/programs-corrected/small-pretrain/listener-validation-specs-suffix-idx.tsv --num_train_epochs 1 --lr_scheduler_type linear --warmup_ratio 0.1 --learning_rate 5e-5 --do_train --do_eval --prediction_loss_only --evaluation_strategy steps --eval_steps 375 --per_device_train_batch_size 32 --per_device_eval_batch_size 128 --save_strategy steps --save_steps 375 --save_total_limit 3 --logging_steps 5 --run_name listener-specs-suffix-idx --output_dir listener-suffix-idx-300k
+python literal_trainer.py \
+    --model_name_or_path google/byt5-small \
+    --train_file data/programs/small-pretrain/listener-train-specs-suffix-idx.tsv \
+    --validation_file data/programs/small-pretrain/listener-validation-specs-suffix-idx.tsv \
+    --num_train_epochs 1 \
+    --lr_scheduler_type linear \
+    --warmup_ratio 0.1 \
+    --learning_rate 5e-5 \
+    --do_train \
+    --do_eval \
+    --prediction_loss_only \
+    --eval_strategy steps \
+    --eval_steps 375 \
+    --per_device_train_batch_size 32 \
+    --per_device_eval_batch_size 128 \
+    --save_strategy steps \
+    --save_steps 375 \
+    --save_total_limit 3 \
+    --logging_steps 5 \
+    --run_name listener-specs-suffix-idx \
+    --output_dir listener-suffix-idx-300k
 ```
 
 ```
-python literal_trainer.py --model_name_or_path google/byt5-small --cache_dir CACHE_DIR --train_file data/programs-corrected/small-pretrain/speaker-train-specs-prefix-idx.tsv --validation_file data/programs-corrected/small-pretrain/speaker-validation-specs-prefix-idx.tsv --num_train_epochs 1 --lr_scheduler_type linear --warmup_ratio 0.1 --learning_rate 5e-5 --do_train --do_eval --prediction_loss_only --evaluation_strategy steps --eval_steps 375 --per_device_train_batch_size 32 --per_device_eval_batch_size 128 --save_strategy steps --save_steps 375 --save_total_limit 3 --logging_steps 5 --run_name speaker-specs-prefix-idx --output_dir speaker-prefix-idx-300k
+python literal_trainer.py \
+    --model_name_or_path google/byt5-small \
+    --train_file data/programs/small-pretrain/speaker-train-specs-prefix-idx.tsv \
+    --validation_file data/programs/small-pretrain/speaker-validation-specs-prefix-idx.tsv \
+    --num_train_epochs 1 \
+    --lr_scheduler_type linear \
+    --warmup_ratio 0.1 \
+    --learning_rate 5e-5 \
+    --do_train \
+    --do_eval \
+    --prediction_loss_only \
+    --eval_strategy steps \
+    --eval_steps 375 \
+    --per_device_train_batch_size 32 \
+    --per_device_eval_batch_size 128 \
+    --save_strategy steps \
+    --save_steps 375 \
+    --save_total_limit 3 \
+    --logging_steps 5 \
+    --run_name speaker-specs-prefix-idx \
+    --output_dir speaker-prefix-idx-300k
 ```
 
 ### Training pragmatic models
