@@ -1,7 +1,6 @@
-import argparse
 from dataclasses import dataclass, field
-import torch
 from typing import Optional
+
 from transformers import (
     AutoModelForSeq2SeqLM, 
     AutoTokenizer, 
@@ -9,12 +8,10 @@ from transformers import (
     Seq2SeqTrainingArguments, 
     Seq2SeqTrainer,
     HfArgumentParser,
-    GenerationConfig
 )
-from utils import DataCollatorForSeq2Seq
 from datasets import load_dataset
-from torch.utils.data import DataLoader
-# import wandb
+
+from utils import DataCollatorForSeq2Seq
 
 @dataclass
 class ModelArguments:
@@ -129,7 +126,9 @@ def train_listener(model_args, data_args, training_args):
 
     def preprocess_function(examples):
         model_inputs = tokenizer([' ' if x is None else x for x in examples["context"]], text_target=examples["target"])
-        decoder_input_ids = [[bos, *inp[:-1]] for bos, inp in zip(tokenizer.convert_tokens_to_ids(examples["bos_token"]), model_inputs['labels'])]
+        decoder_input_ids = [
+            [bos, *inp[:-1]] for bos, inp in zip(tokenizer.convert_tokens_to_ids(examples["bos_token"]), model_inputs['labels'])
+        ]
         return {**model_inputs, 'decoder_input_ids': decoder_input_ids}
     
     tokenized_dataset = dataset.filter(lambda x: x['target'] is not None and x['context'] is not None).map(preprocess_function, batched=True, remove_columns=["target", "bos_token", "context"], batch_size=1000, num_proc=16)
