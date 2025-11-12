@@ -10,7 +10,6 @@ from typing import Optional, List, Union, Tuple
 from torch.nn import CrossEntropyLoss
 import torch.nn.functional as F
 from moe_decoding import MoELogitsProcessor, AdditiveMixture
-from gumbel_noise import GumbelLogitsProcessor
 from utils import get_preprocess_function, get_utterance_processing_functions, byt5_decode_batch, consistent, DataCollatorForSeq2Seq
 from example_sampler import PROGRAM_SPECIAL_TOKEN, UTTERANCES_SPECIAL_TOKEN, GT_PROGRAM_SPECIAL_TOKEN
 from args import TrainingArguments

@@ -1,19 +1,18 @@
-from collections import defaultdict
-from utils import consistent
 import os
-from tqdm import tqdm
-# import wandb
-import numpy as np
-from agents import Listener, Speaker, JointMoESpeaker
-from pathlib import Path
-import logging
-import functools
-import time
-from tqdm import tqdm
-import dataclasses
 import json
-from multiprocessing import Pool
+import time
+import logging
 import itertools
+import functools
+import dataclasses
+from pathlib import Path
+from multiprocessing import Pool
+
+import numpy as np
+from tqdm import tqdm
+
+from utils import consistent
+from agents import Listener, Speaker, JointMoESpeaker
 
 def unchain(L, counts):
     unchained_L = []
@@ -110,9 +109,7 @@ def choose_next_utterance(hypothesis_candidates, utterance_candidates):
     return next_utterances
 
 def main(config):
-    os.makedirs(os.path.join(
-        config["working_directory"]
-    ), exist_ok=True)
+    os.makedirs(os.path.join(config["working_directory"]), exist_ok=True)
 
     # Load listener models
     listeners = list()

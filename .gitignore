@@ -166,3 +166,6 @@ regex_test
 
 ./data
 ./results
+
+listener-suffix-idx-300k
+speaker-prefix-idx-300k
