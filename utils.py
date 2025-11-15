@@ -1,15 +1,16 @@
 from dataclasses import dataclass
-from typing import Optional, Any, Union
+from typing import Any, Optional, Union
 
+import numpy as np
 import regex as re
 from transformers import PreTrainedTokenizerBase
 from transformers.utils import PaddingStrategy
-import numpy as np
+
 
 def consistent(rx, spec):
     # spec is in the form of (string, '+'/'-') pairs
     for s, label in spec:
-        if not label in ['+', '-']:
+        if label not in ['+', '-']:
             return None
         try:
             if re.fullmatch(rx, s, timeout=1):
@@ -189,7 +190,7 @@ class DataCollatorForSeq2Seq:
         # prepare decoder_input_ids
         if (
             labels is not None
-            and not "decoder_input_ids" in features
+            and "decoder_input_ids" not in features
             and self.model is not None
             and hasattr(self.model, "prepare_decoder_input_ids_from_labels")
         ):
