@@ -8,7 +8,6 @@ from typing import List, Optional
 import numpy as np
 import torch
 import torch.nn.functional as F
-import wandb
 from args import TrainingArguments
 from datasets import load_dataset
 from example_sampler import (
@@ -208,7 +207,7 @@ class Agent:
             outputs = self.model(**batch)
             loss = outputs.loss
             training_losses.append(loss.item())
-            wandb.log({f"inner_loop/{self.name}_train_loss": loss.item(), f"{self.name}_step": self.step})
+            # wandb.log({f"inner_loop/{self.name}_train_loss": loss.item(), f"{self.name}_step": self.step})
             loss.backward()
 
             self.optimizer.step()
@@ -313,7 +312,7 @@ class Listener(Agent):
             idxs.append(idx)
         
         logprobs = torch.stack(outputs.scores, dim=1).log_softmax(dim=-1)
-        gen_probs = torch.gather(logprobs, 2, outputs.sequences[:, 1:, None]).squeeze(-1)
+        gen_probs = torch.gather(logprobs, 2, outputs.sequences[:, 2:, None]).squeeze(-1)
         gen_probs.masked_fill_(gen_probs.isinf(), 0)
         scores = gen_probs.sum(-1)
         n_decoded = scores.shape[0]
@@ -489,7 +488,7 @@ class Speaker(Agent):
             idxs.append(idx)
         
         logprobs = torch.stack(outputs.scores, dim=1).log_softmax(dim=-1)
-        gen_probs = torch.gather(logprobs, 2, outputs.sequences[:, 1:, None]).squeeze(-1)
+        gen_probs = torch.gather(logprobs, 2, outputs.sequences[:, 2:, None]).squeeze(-1)
         gen_probs.masked_fill_(gen_probs.isinf(), 0)
         scores = gen_probs.sum(-1)
         n_decoded = scores.shape[0]
