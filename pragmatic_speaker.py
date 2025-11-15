@@ -1,18 +1,18 @@
-import os
-import json
-import time
-import logging
-import itertools
-import functools
 import dataclasses
-from pathlib import Path
+import functools
+import itertools
+import json
+import logging
+import os
+import time
 from multiprocessing import Pool
+from pathlib import Path
 
 import numpy as np
+from agents import JointMoESpeaker, Listener, Speaker
 from tqdm import tqdm
-
 from utils import consistent
-from agents import Listener, Speaker, JointMoESpeaker
+
 
 def unchain(L, counts):
     unchained_L = []
@@ -237,7 +237,7 @@ def main(config):
             # next_utterances = choose_next_utterance(hypothesis_candidates, utterance_candidates)
 
             for ctx, u in zip(train_contexts, itertools.chain.from_iterable(next_utterances_pl)):
-                if not u is None:
+                if u is not None:
                     ctx.append(u)
             
             with open(Path(config["working_directory"]) / f"round-{rd}-turn-{i}-training-logs.json", 'w') as f:
@@ -312,7 +312,7 @@ def main(config):
                 next_utterances_pl = [res.get() for res in multiple_results]
 
             for ctx, u in zip(validation_contexts, itertools.chain.from_iterable(next_utterances_pl)):
-                if not u is None:
+                if u is not None:
                     ctx.append(u)
             
             with open(Path(config["working_directory"]) / f"round-{rd}-turn-{i}-validation-logs.json", 'w') as f:
@@ -335,7 +335,7 @@ def main(config):
                     "listener_outputs": list(map(lambda x: dataclasses.asdict(x), listener_outputs))
                     }, f)
 
-        logging.info(f"TRAINING SPEAKERS") 
+        logging.info("TRAINING SPEAKERS") 
         for idx, speaker in enumerate(speakers):
             if not speaker.trainable:
                 continue
@@ -392,7 +392,7 @@ def main(config):
             #     f"{speaker.name}_step": speaker.step
             #     })
 
-        logging.info(f"TRAINING LISTENERS") 
+        logging.info("TRAINING LISTENERS") 
         for idx, listener in enumerate(listeners):
             if not listener.trainable:
                 continue

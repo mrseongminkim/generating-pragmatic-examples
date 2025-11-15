@@ -1,25 +1,41 @@
-from datasets import load_dataset, Dataset
-from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, GenerationConfig, get_scheduler, LogitsProcessor
-from torch.utils.data import DataLoader
-from tqdm import tqdm
-import wandb
-import torch
-from torch.optim import AdamW
-from dataclasses import dataclass, field
-from typing import Optional, List, Union, Tuple
-from torch.nn import CrossEntropyLoss
-import torch.nn.functional as F
-from moe_decoding import MoELogitsProcessor, AdditiveMixture
-from utils import get_preprocess_function, get_utterance_processing_functions, byt5_decode_batch, consistent, DataCollatorForSeq2Seq
-from example_sampler import PROGRAM_SPECIAL_TOKEN, UTTERANCES_SPECIAL_TOKEN, GT_PROGRAM_SPECIAL_TOKEN
-from args import TrainingArguments
 import logging
-from pathlib import Path
-import random
 import os
+import random
+from dataclasses import dataclass
+from pathlib import Path
+from typing import List, Optional
+
+import numpy as np
+import torch
+import torch.nn.functional as F
+import wandb
+from args import TrainingArguments
+from datasets import load_dataset
+from example_sampler import (
+    GT_PROGRAM_SPECIAL_TOKEN,
+    PROGRAM_SPECIAL_TOKEN,
+    UTTERANCES_SPECIAL_TOKEN,
+)
 from greenery import parse
 from greenery.parse import NoMatch
-import numpy as np
+from moe_decoding import AdditiveMixture, MoELogitsProcessor
+from torch.nn import CrossEntropyLoss
+from torch.optim import AdamW
+from torch.utils.data import DataLoader
+from tqdm import tqdm
+from transformers import (
+    AutoModelForSeq2SeqLM,
+    AutoTokenizer,
+    GenerationConfig,
+    get_scheduler,
+)
+from utils import (
+    DataCollatorForSeq2Seq,
+    byt5_decode_batch,
+    consistent,
+    get_utterance_processing_functions,
+)
+
 
 class Agent:
     def __init__(self, 
@@ -456,7 +472,7 @@ class Speaker(Agent):
                 if len(s) > 25:
                     continue
 
-                if not label in ['+', '-']:
+                if label not in ['+', '-']:
                     continue
 
                 if u[0] in ctx:
@@ -618,7 +634,7 @@ class SpeakerFromPrograms(Agent):
                 if len(s) > 25:
                     continue
 
-                if not label in ['+', '-']:
+                if label not in ['+', '-']:
                     continue
 
                 if ' ' in s or '\t' in s or '\n' in s:
@@ -850,7 +866,7 @@ class JointMoESpeaker(Speaker):
                 if len(s) > 25:
                     continue
 
-                if not label in ['+', '-']:
+                if label not in ['+', '-']:
                     continue
 
                 if consistent(target, u):
@@ -961,7 +977,7 @@ class MoESpeaker(Speaker):
                 s, label = u[0]
                 if len(s) > 25:
                     continue
-                if not label in ['+', '-']:
+                if label not in ['+', '-']:
                     continue
 
                 if consistent(target, u):
