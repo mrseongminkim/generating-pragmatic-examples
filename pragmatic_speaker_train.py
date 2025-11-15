@@ -6,7 +6,7 @@ if __name__ == "__main__":
             { 
                 "model_path": "pragmatic-programs/listener-suffix-idx-300k",
                 "trainable": True, 
-                "save_path": f"working-s0=250-s1=250-l0=250-l1=250-ntpr=5120-nr=1-s=10-init-all/listener", 
+                "save_path": "working-s0=250-s1=250-l0=250-l1=250-ntpr=5120-nr=1-s=10-init-all/listener", 
                 "gen_config": {
                     "do_sample": True,
                     "num_beams": 1,
@@ -59,7 +59,7 @@ if __name__ == "__main__":
                 "type": "std",
                 "model_path": "pragmatic-programs/speaker-prefix-idx-300k",
                 "trainable": True, 
-                "save_path": f"working-s0=250-s1=250-l0=250-l1=250-ntpr=5120-nr=1-s=10-init-all/speaker", 
+                "save_path": "working-s0=250-s1=250-l0=250-l1=250-ntpr=5120-nr=1-s=10-init-all/speaker", 
                 "gen_config": {
                     "do_sample": True,
                     "num_beams": 1,
@@ -104,13 +104,13 @@ if __name__ == "__main__":
                 "inference_batch_size": 4,
             }
         ],
-        "path_to_targets": f"data/programs/pragmatic-target-programs.txt",
-        "working_directory": f"working-s0=250-s1=250-l0=250-l1=250-ntpr=5120-nr=1-s=10-init-all",
+        "path_to_targets": "data/programs/pragmatic-target-programs.txt",
+        "working_directory": "working-s0=250-s1=250-l0=250-l1=250-ntpr=5120-nr=1-s=10-init-all",
         "num_rounds": 10,
         "num_train_programs_per_round": 1024,
         "num_validation_programs_per_round": 32,
         "spec_len": 10,
-        "user_validation_set": "data/verified_split_val_data.json",
+        "user_validation_set": "data/verified_split_val_set.json",
         "inner_loop_validation_set": "user_validation",
         "train_from_init": True,
         "train_on_all_rounds": True,

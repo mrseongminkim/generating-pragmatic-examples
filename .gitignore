@@ -169,3 +169,4 @@ regex_test
 
 listener-suffix-idx-300k
 speaker-prefix-idx-300k
+working-s0=250-s1=250-l0=250-l1=250-ntpr=5120-nr=1-s=10-init-all
