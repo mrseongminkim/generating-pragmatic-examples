@@ -5,6 +5,7 @@ from multiprocessing import Pool
 from pathlib import Path
 
 import numpy as np
+import wandb
 from agents import Listener, Speaker
 from tqdm import tqdm
 from utils import consistent
@@ -68,6 +69,8 @@ def choose_next_utterance(hypothesis_candidates, utterance_candidates):
     return next_utterances
 
 def main(config):
+    wandb.init(project="pragmatic-dataset-generation")
+
     os.makedirs(os.path.join(config["working_directory"]), exist_ok=True)
 
     listeners = list()
@@ -97,7 +100,7 @@ def main(config):
                     ]
                 }
             )
-            # wandb.log({f"outer_loop/{speaker.name}_user_validation_loss": loss["user_validation"], f"{speaker.name}_step": speaker.step})
+            wandb.log({f"outer_loop/{speaker.name}_user_validation_loss": loss["user_validation"], f"{speaker.name}_step": speaker.step})
             break
 
         for listener in listeners:
@@ -113,7 +116,7 @@ def main(config):
                     ]
                 }
             )
-            # wandb.log({f"outer_loop/{listener.name}_user_validation_loss": loss["user_validation"], f"{listener.name}_step": listener.step})
+            wandb.log({f"outer_loop/{listener.name}_user_validation_loss": loss["user_validation"], f"{listener.name}_step": listener.step})
             break
 
     with open(config["path_to_targets"]) as f:
@@ -222,10 +225,10 @@ def main(config):
             loss = speaker.evaluate_loss({
                     "user_validation": str(Path(config["working_directory"]) / "user-validation-contexts-speaker.tsv"),
             })
-            # wandb.log({
-            #     f"outer_loop/{speaker.name}_user_validation_loss": loss["user_validation"], 
-            #     f"{speaker.name}_step": speaker.step
-            #     })
+            wandb.log({
+                f"outer_loop/{speaker.name}_user_validation_loss": loss["user_validation"], 
+                f"{speaker.name}_step": speaker.step
+                })
         print("\nTRAINING LISTENERS") 
         for idx, listener in enumerate(listeners):
             if not listener.trainable:
@@ -274,7 +277,7 @@ def main(config):
                     "user_validation": str(Path(config["working_directory"]) / "user-validation-contexts-listener.tsv"),
             })
 
-            # wandb.log({
-            #     f"outer_loop/{listener.name}_user_validation_loss": loss["user_validation"], 
-            #     f"{listener.name}_step": listener.step
-            #     })
+            wandb.log({
+                f"outer_loop/{listener.name}_user_validation_loss": loss["user_validation"], 
+                f"{listener.name}_step": listener.step
+                })

@@ -6,7 +6,13 @@ from typing import List, Optional
 
 import torch
 import torch.nn.functional as F
+import wandb
+from args import TrainingArguments
 from datasets import load_dataset
+from example_sampler import (
+    PROGRAM_SPECIAL_TOKEN,
+    UTTERANCES_SPECIAL_TOKEN,
+)
 from greenery import parse
 from greenery.parse import NoMatch
 from torch.nn import CrossEntropyLoss
@@ -18,12 +24,6 @@ from transformers import (
     AutoTokenizer,
     GenerationConfig,
     get_scheduler,
-)
-
-from args import TrainingArguments
-from example_sampler import (
-    PROGRAM_SPECIAL_TOKEN,
-    UTTERANCES_SPECIAL_TOKEN,
 )
 from utils import (
     DataCollatorForSeq2Seq,
@@ -203,7 +203,7 @@ class Agent:
             outputs = self.model(**batch)
             loss = outputs.loss
             training_losses.append(loss.item())
-            # wandb.log({f"inner_loop/{self.name}_train_loss": loss.item(), f"{self.name}_step": self.step})
+            wandb.log({f"inner_loop/{self.name}_train_loss": loss.item(), f"{self.name}_step": self.step})
             loss.backward()
 
             self.optimizer.step()
@@ -334,7 +334,6 @@ class Listener(Agent):
             except NoMatch:
                 pass
 
-        import ipdb; ipdb.set_trace()
         pruned = list()
         for p in parsed:
             for q in pruned:
