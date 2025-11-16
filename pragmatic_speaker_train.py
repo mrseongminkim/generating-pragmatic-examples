@@ -118,6 +118,6 @@ if __name__ == "__main__":
         "accumulate_hypotheses": False,
         "enforce_consistency": True,
         "utterance_from_gt": True,
-        "num_workers": 16
+        "num_workers": 64
     }
     main(args)
