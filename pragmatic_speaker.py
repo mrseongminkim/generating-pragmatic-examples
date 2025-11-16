@@ -109,12 +109,12 @@ def main(config):
     listeners = list()
     for listener_config in config["listeners"]:
         listeners.append(Listener(**listener_config, resume=config.get("resume", None)))
-        print(f"Loaded listener {listeners[-1].name} onto {listeners[-1].model.device}")
+        logging.info(f"Loaded listener {listeners[-1].name} onto {listeners[-1].model.device}")
 
     speakers = list()
     for speaker_config in config["speakers"]:
         speakers.append(Speaker(**speaker_config, resume=config.get("resume", None)))
-        print(f"Loaded speaker {speakers[-1].name} onto {speakers[-1].model.device}")
+        logging.info(f"Loaded speaker {speakers[-1].name} onto {speakers[-1].model.device}")
 
     with open(config["user_validation_set"]) as f:
         user_validation_set = json.load(f)
@@ -299,7 +299,7 @@ def main(config):
                     **{
                         f"validation_{j}": os.path.join(
                             config["working_directory"], 
-                            f"round-{j}-validation-contexts-{listener.name}.tsv"
+                            f"round-{j}-validation-contexts-{listener}.tsv"
                         )
                         for j in range(rd + 1)
                     },

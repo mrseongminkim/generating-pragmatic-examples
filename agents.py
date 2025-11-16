@@ -6,12 +6,7 @@ from typing import List, Optional
 
 import torch
 import torch.nn.functional as F
-from args import TrainingArguments
 from datasets import load_dataset
-from example_sampler import (
-    PROGRAM_SPECIAL_TOKEN,
-    UTTERANCES_SPECIAL_TOKEN,
-)
 from greenery import parse
 from greenery.parse import NoMatch
 from torch.nn import CrossEntropyLoss
@@ -23,6 +18,12 @@ from transformers import (
     AutoTokenizer,
     GenerationConfig,
     get_scheduler,
+)
+
+from args import TrainingArguments
+from example_sampler import (
+    PROGRAM_SPECIAL_TOKEN,
+    UTTERANCES_SPECIAL_TOKEN,
 )
 from utils import (
     DataCollatorForSeq2Seq,
@@ -135,7 +136,7 @@ class Agent:
 
     def reload_model(self, from_init=False):
         if from_init:
-            print(f"Loading model {self.name} from {self.init_model_path}")
+            logging.info(f"Loading model {self.name} from {self.init_model_path}")
             self.model = AutoModelForSeq2SeqLM.from_pretrained(self.init_model_path).to(self.device)
             if self.trainable:
                 self.optimizer = AdamW(
@@ -146,7 +147,7 @@ class Agent:
                     self.training_args.num_warmup_steps
                     )
         else:
-            print(f"Loading model {self.name} from {self.most_recent_checkpoint}")
+            logging.info(f"Loading model {self.name} from {self.most_recent_checkpoint}")
             self.model = AutoModelForSeq2SeqLM.from_pretrained(self.most_recent_checkpoint).to(self.device)
     
     def update_model(self, dataset_paths, save_path, validation_split="user_validation", save_every=None):

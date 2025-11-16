@@ -32,7 +32,7 @@ if __name__ == "__main__":
                     "learning_rate": 5e-5,
                     "validation_steps": 16
                 },
-                "inference_batch_size": 4,
+                "inference_batch_size": 8,
             },
             { 
                 "model_path": "pragmatic-programs/listener-suffix-idx-300k",
@@ -51,7 +51,7 @@ if __name__ == "__main__":
                 "name": "listener1",
                 "program_special_token": "<extra_id_124>",
                 "utterances_special_token": "<extra_id_123>",
-                "inference_batch_size": 4
+                "inference_batch_size": 8
             }
         ],
         "speakers": [
@@ -83,7 +83,7 @@ if __name__ == "__main__":
                     "learning_rate": 5e-5,
                     "validation_steps": 16
                 },
-                "inference_batch_size": 4,
+                "inference_batch_size": 8,
             },
             {
                 "type": "std",
@@ -101,7 +101,7 @@ if __name__ == "__main__":
                 "name": "speaker1",
                 "program_special_token": "<extra_id_124>",
                 "utterances_special_token": "<extra_id_123>",
-                "inference_batch_size": 4,
+                "inference_batch_size": 8,
             }
         ],
         "path_to_targets": "data/programs/pragmatic-target-programs.txt",
