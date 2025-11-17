@@ -51,7 +51,7 @@ if __name__ == "__main__":
                 "name": "listener1",
                 "program_special_token": "<extra_id_124>",
                 "utterances_special_token": "<extra_id_123>",
-                "inference_batch_size": 8
+                "inference_batch_size": 4
             }
         ],
         "speakers": [
